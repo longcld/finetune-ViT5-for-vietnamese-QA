@@ -16,14 +16,14 @@ class DataTrainingArguments:
     """
     Arguments pertaining to what data we are going to input our model for training and eval.
     """
-    task: str = field(
-        metadata={"help": "Which task 'qa', 'qg', 'e2e_qg', 'ans_ext', 'multi'. 'multi' means 'qa', 'qg', 'ans_ext' tasks"}, 
-    )
+    # task: str = field(
+    #     metadata={"help": "Which task 'qa', 'qg', 'e2e_qg', 'ans_ext', 'multi'. 'multi' means 'qa', 'qg', 'ans_ext' tasks"}, 
+    # )
     model_type: str = field(metadata={"help": "One of 't5', 'bart'"})
-    dataset_path: Optional[str] = field(
-        default="data/squad_multitask",
-        metadata={"help": "Path for dataset directory"}, 
-    )
+    # dataset_path: Optional[str] = field(
+    #     default="data/squad_multitask",
+    #     metadata={"help": "Path for dataset directory"}, 
+    # )
     train_file_name: Optional[str] = field(
         default=None,
         metadata={"help": "name for cached train dataset"},
@@ -155,10 +155,10 @@ def main():
     # train_dataset = nlp.load_dataset(data_args.dataset_path, name=data_args.qg_format, split=nlp.Split.TRAIN)
     # valid_dataset = nlp.load_dataset(data_args.dataset_path, name=data_args.qg_format, split=nlp.Split.VALIDATION)
     
-    with open ("/home/longnt/question_answering/source/FineTuneQA/train_visquad.json", "r") as f:
+    with open ("data/train_visquad.json", "r") as f:
         train_dataset = nlp.Dataset.from_dict(json.load(f))
     
-    with open ("/home/longnt/question_answering/source/FineTuneQA/valid_visquad.json", "r") as f:
+    with open ("data/valid_visquad.json", "r") as f:
         valid_dataset = nlp.Dataset.from_dict(json.load(f))
 
     processor = DataProcessor(
@@ -183,15 +183,15 @@ def main():
     train_dataset.set_format(type='torch', columns=columns)
     valid_dataset.set_format(type='torch', columns=columns)
 
-    if data_args.train_file_name is None:
-        train_file_name = f"train_data_{data_args.task}_{data_args.qg_format}_{data_args.model_type}.pt"
-        train_path = os.path.join("data", train_file_name)
+    # if data_args.train_file_name is None:
+    #     train_file_name = f"train_data_{data_args.task}_{data_args.qg_format}_{data_args.model_type}.pt"
+    #     train_path = os.path.join("data", train_file_name)
 
-        valid_file_name = f"valid_data_{data_args.task}_{data_args.qg_format}_{data_args.model_type}.pt"
-        valid_path = os.path.join("data", valid_file_name)
-    else:
-        train_path = os.path.join("data", data_args.train_file_name)
-        valid_path = os.path.join("data", data_args.valid_file_name)
+    #     valid_file_name = f"valid_data_{data_args.task}_{data_args.qg_format}_{data_args.model_type}.pt"
+    #     valid_path = os.path.join("data", valid_file_name)
+    # else:
+    train_path = os.path.join("data", data_args.train_file_name)
+    valid_path = os.path.join("data", data_args.valid_file_name)
     
     torch.save(train_dataset, train_path)
     logger.info(f"saved train dataset at {train_path}")
@@ -199,11 +199,11 @@ def main():
     torch.save(valid_dataset, valid_path)
     logger.info(f"saved validation dataset at {valid_path}")
     
-    tokenizer_path = f"{data_args.model_type}_qg_tokenizer"
-    if not os.path.exists(tokenizer_path):
-        os.mkdir(tokenizer_path)
-    tokenizer.save_pretrained(tokenizer_path)
-    logger.info(f"saved tokenizer at {tokenizer_path}")
+    # tokenizer_path = f"{data_args.model_type}_qg_tokenizer"
+    # if not os.path.exists(tokenizer_path):
+    #     os.mkdir(tokenizer_path)
+    # tokenizer.save_pretrained(tokenizer_path)
+    # logger.info(f"saved tokenizer at {tokenizer_path}")
 
 
 if __name__ == "__main__":
