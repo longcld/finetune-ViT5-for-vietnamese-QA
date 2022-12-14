@@ -155,11 +155,30 @@ def main():
     # train_dataset = nlp.load_dataset(data_args.dataset_path, name=data_args.qg_format, split=nlp.Split.TRAIN)
     # valid_dataset = nlp.load_dataset(data_args.dataset_path, name=data_args.qg_format, split=nlp.Split.VALIDATION)
     
-    with open ("data/train_visquad.json", "r") as f:
-        train_dataset = nlp.Dataset.from_dict(json.load(f))
+    # with open ("data/train_visquad.json", "r") as f:
+    #     train_visquad = json.load(f)
+
+    # with open ("data/train_zac2022.json", "r") as f:
+    #     train_zac2022 = json.load(f)
+
+    # train_dict = {"source_text": train_visquad['source_text'] + train_zac2022['source_text'],
+    #               "target_text": train_visquad['target_text'] + train_zac2022['target_text']}
+
+    # train_dict = train_zac2022
+    # train_dataset = nlp.Dataset.from_dict(train_dict)
     
-    with open ("data/valid_visquad.json", "r") as f:
-        valid_dataset = nlp.Dataset.from_dict(json.load(f))
+    # with open ("data/valid_visquad.json", "r") as f:
+    #     valid_dataset = nlp.Dataset.from_dict(json.load(f))
+
+
+    with open ("/home/longnt/Semantic_Textual_Similarity/NLI_generation/vinli.json", "r") as f:
+        vinli = json.load(f)
+
+    with open ("/home/longnt/Semantic_Textual_Similarity/NLI_generation/vinli_dev.json", "r") as f:
+        vinli_dev = json.load(f)
+        
+    train_dataset = nlp.Dataset.from_dict(vinli)
+    valid_dataset = nlp.Dataset.from_dict(vinli_dev)
 
     processor = DataProcessor(
         tokenizer,
